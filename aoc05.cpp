@@ -17,7 +17,14 @@ vector<int> program = {
 const vector<int> original_program = program;
 
 int process(int position) {
-  switch (program.at(position)) {
+  const int command_size = 5;
+  int input = 1;
+  int opcode = -1;
+  std::string command = to_string(program.at(position));
+  command.insert(command.begin(), command_size - command.size(), '0');
+  opcode = stoi(command.substr(command_size - 2, command_size - 1));
+
+  switch (opcode) {
     case 1:
       program.at(program.at(position + 3)) =
           program.at(program.at(position + 1)) +
@@ -29,11 +36,11 @@ int process(int position) {
           program.at(program.at(position + 2));
       break;
     case 3:
-
+      program.at(program.at(position + 1)) = input;
       break;
     case 4:
-
-      break;
+      cout << "Output: " << program.at(program.at(position + 1)) << '\n';
+      return 4;
     case 99:
       return 99;
     default:
@@ -43,29 +50,21 @@ int process(int position) {
 }
 
 int main() {
-  for (int noun = 0; noun < 100; noun++) {
-    for (int verb = 0; verb < 100; verb++) {
-      program = original_program;
-      program.at(1) = noun;
-      program.at(2) = verb;
-      int position = 0;
-      int error = 0;
-      while (true) {
-        error = process(position);
-        if (error == 0) {
-          position += 4;
-        } else if (error == 99) {
-          cout << "Program ended with 99\n";
-          break;
-        } else {
-          cout << "Unexpected command\n";
-          break;
-        }
-      }
-      if (program.at(0) == 19690720) {
-        cout << noun << ' ' << verb << '\n';
-        return 0;
-      }
+  int position = 0;
+  int error = 0;
+  while (true) {
+    error = process(position);
+    if (error == 0) {
+      position += 4;
+    } else if (error == 4) {
+      cout << "Program ended with 4\n";
+      break;
+    } else if (error == 99) {
+      cout << "Program ended with 99\n";
+      break;
+    } else {
+      cout << "Unexpected command\n";
+      break;
     }
   }
 
