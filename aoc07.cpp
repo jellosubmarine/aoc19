@@ -5,17 +5,62 @@
 #define PROGRAM_END_UNEXPECTED -1
 
 using namespace std;
-vector<int> program = {3,  26, 1001, 26, -4, 26, 3, 27, 1002, 27,
-                       2,  27, 1,    27, 26, 27, 4, 27, 1001, 28,
-                       -1, 28, 1005, 28, 6,  99, 0, 0,  5};
+// vector<int> program = {3,  26, 1001, 26, -4, 26, 3, 27, 1002, 27,
+//                        2,  27, 1,    27, 26, 27, 4, 27, 1001, 28,
+//                        -1, 28, 1005, 28, 6,  99, 0, 0,  5};
 
-const vector<int> original_program = program;
+const vector<int> original_program = {
+    3,    8,    1001, 8,    10,   8,    105,  1,    0,     0,    21,   42,
+    67,   84,   109,  122,  203,  284,  365,  446,  99999, 3,    9,    1002,
+    9,    3,    9,    1001, 9,    5,    9,    102,  4,     9,    9,    1001,
+    9,    3,    9,    4,    9,    99,   3,    9,    1001,  9,    5,    9,
+    1002, 9,    3,    9,    1001, 9,    4,    9,    102,   3,    9,    9,
+    101,  3,    9,    9,    4,    9,    99,   3,    9,     101,  5,    9,
+    9,    1002, 9,    3,    9,    101,  5,    9,    9,     4,    9,    99,
+    3,    9,    102,  5,    9,    9,    101,  5,    9,     9,    102,  3,
+    9,    9,    101,  3,    9,    9,    102,  2,    9,     9,    4,    9,
+    99,   3,    9,    101,  2,    9,    9,    1002, 9,     3,    9,    4,
+    9,    99,   3,    9,    101,  2,    9,    9,    4,     9,    3,    9,
+    101,  1,    9,    9,    4,    9,    3,    9,    101,   1,    9,    9,
+    4,    9,    3,    9,    1001, 9,    1,    9,    4,     9,    3,    9,
+    101,  1,    9,    9,    4,    9,    3,    9,    1002,  9,    2,    9,
+    4,    9,    3,    9,    1002, 9,    2,    9,    4,     9,    3,    9,
+    1001, 9,    2,    9,    4,    9,    3,    9,    101,   1,    9,    9,
+    4,    9,    3,    9,    1002, 9,    2,    9,    4,     9,    99,   3,
+    9,    1001, 9,    1,    9,    4,    9,    3,    9,     101,  2,    9,
+    9,    4,    9,    3,    9,    102,  2,    9,    9,     4,    9,    3,
+    9,    101,  1,    9,    9,    4,    9,    3,    9,     102,  2,    9,
+    9,    4,    9,    3,    9,    1001, 9,    1,    9,     4,    9,    3,
+    9,    101,  1,    9,    9,    4,    9,    3,    9,     1002, 9,    2,
+    9,    4,    9,    3,    9,    101,  2,    9,    9,     4,    9,    3,
+    9,    1002, 9,    2,    9,    4,    9,    99,   3,     9,    101,  2,
+    9,    9,    4,    9,    3,    9,    101,  2,    9,     9,    4,    9,
+    3,    9,    101,  2,    9,    9,    4,    9,    3,     9,    101,  1,
+    9,    9,    4,    9,    3,    9,    101,  1,    9,     9,    4,    9,
+    3,    9,    102,  2,    9,    9,    4,    9,    3,     9,    1002, 9,
+    2,    9,    4,    9,    3,    9,    1002, 9,    2,     9,    4,    9,
+    3,    9,    101,  2,    9,    9,    4,    9,    3,     9,    1001, 9,
+    1,    9,    4,    9,    99,   3,    9,    1001, 9,     1,    9,    4,
+    9,    3,    9,    101,  1,    9,    9,    4,    9,     3,    9,    102,
+    2,    9,    9,    4,    9,    3,    9,    1002, 9,     2,    9,    4,
+    9,    3,    9,    1001, 9,    2,    9,    4,    9,     3,    9,    1001,
+    9,    1,    9,    4,    9,    3,    9,    1001, 9,     2,    9,    4,
+    9,    3,    9,    1002, 9,    2,    9,    4,    9,     3,    9,    1002,
+    9,    2,    9,    4,    9,    3,    9,    102,  2,     9,    9,    4,
+    9,    99,   3,    9,    102,  2,    9,    9,    4,     9,    3,    9,
+    1002, 9,    2,    9,    4,    9,    3,    9,    101,   2,    9,    9,
+    4,    9,    3,    9,    101,  2,    9,    9,    4,     9,    3,    9,
+    101,  1,    9,    9,    4,    9,    3,    9,    1002,  9,    2,    9,
+    4,    9,    3,    9,    101,  1,    9,    9,    4,     9,    3,    9,
+    1001, 9,    2,    9,    4,    9,    3,    9,    102,   2,    9,    9,
+    4,    9,    3,    9,    101,  1,    9,    9,    4,     9,    99};
+;
 vector<int> input = {0, 0};
 int output = 0;
-vector<int> phase_seq = {9, 8, 7, 6, 5};
+vector<int> phase_seq = {5, 6, 7, 8, 9};
 int input_seq = 0;
 
-int process(int position, int first_run) {
+int process(int position, int first_run, vector<int> &program) {
   const int command_size = 5;
   int opcode = -1;
   int A = 0;
@@ -55,13 +100,13 @@ int process(int position, int first_run) {
       // cin >> input;
       if (first_run) {
         program.at(C) = input[input_seq];
-        cout << "if" << input[input_seq] << endl;
+        // cout << "if" << input[input_seq] << endl;
 
         input_seq++;
 
       } else {
         program.at(C) = output;
-        cout << "else" << output << endl;
+        // cout << "else" << output << endl;
       }
       return position + 2;
     case 4:
@@ -71,6 +116,7 @@ int process(int position, int first_run) {
       input_seq = 0;
       input[1] = C;
       output = C;
+      // cout << "Output: " << output << endl;
       // return position + 2;
       return PROGRAM_END_OUTPUT;
     // if (C == 0) {
@@ -139,6 +185,9 @@ int process(int position, int first_run) {
 // vector<int> max_seq = {};
 int max_thrust = 0;
 vector<int> position_list = {0, 0, 0, 0, 0};
+vector<vector<int>> program_list = {original_program, original_program,
+                                    original_program, original_program,
+                                    original_program};
 
 int main() {
   do {
@@ -153,13 +202,13 @@ int main() {
         input[0] = phase_seq[i];
         int error = 0;
         while (true) {
-          error = process(position_list[i], first_run[i]);
+          error = process(position_list[i], first_run[i], program_list[i]);
           if (error > 0) {
             position_list[i] = error;
           } else if (error == PROGRAM_END_OUTPUT) {
             position_list[i] += 2;
             first_run[i] = 0;
-            cout << "Program ended with output command\n";
+            // cout << "Program ended with output command\n";
             break;
           } else if (error == PROGRAM_END_NORMAL) {
             cout << "Program ended normally\n";
@@ -180,10 +229,7 @@ int main() {
     if (output > max_thrust) {
       max_thrust = output;
     }
-    cout << max_thrust << endl;
-    return 0;
-
-    break;
+    // cout << max_thrust << endl;
   } while (std::next_permutation(phase_seq.begin(), phase_seq.end()));
   cout << max_thrust << endl;
   // for (auto const& c : program) std::cout << c << ' ';
