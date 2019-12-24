@@ -5,19 +5,13 @@
 #define PROGRAM_END_UNEXPECTED -1
 
 using namespace std;
-// vector<int> program = {3,  26, 1001, 26, -4, 26, 3, 27, 1002, 27,
-//                        2,  27, 1,    27, 26, 27, 4, 27, 1001, 28,
-//                        -1, 28, 1005, 28, 6,  99, 0, 0,  5};
 
 const vector<int> original_program = {109,  1,   204, -1,  1001, 100, 1, 100,
                                       1008, 100, 16,  101, 1006, 101, 0, 99};
-;
-vector<int> input = {0, 0};
+vector<int> program = original_program;
 int output = 0;
-vector<int> phase_seq = {5, 6, 7, 8, 9};
-int input_seq = 0;
 
-int process(int position, int first_run, vector<int> &program) {
+int process(int position) {
   const int command_size = 5;
   int opcode = -1;
   int A = 0;
@@ -53,38 +47,17 @@ int process(int position, int first_run, vector<int> &program) {
     case 3:
       C = (command[command_size - 3] == '0') ? program.at(position + 1)
                                              : (position + 1);
-      // cout << "Input: ";
-      // cin >> input;
-      if (first_run) {
-        program.at(C) = input[input_seq];
-        // cout << "if" << input[input_seq] << endl;
 
-        input_seq++;
+      program.at(C) = 1;
 
-      } else {
-        program.at(C) = output;
-        // cout << "else" << output << endl;
-      }
       return position + 2;
     case 4:
       C = (command[command_size - 3] == '0')
               ? program.at(program.at(position + 1))
               : program.at(position + 1);
-      input_seq = 0;
-      input[1] = C;
       output = C;
-      // cout << "Output: " << output << endl;
-      // return position + 2;
       return PROGRAM_END_OUTPUT;
-    // if (C == 0) {
-    //   // cout << "Output: " << C << '\n';
-    //   output = C;
-    //   return position + 2;
-    // } else {
-    //   // cout << "Output: " << C << '\n';
-    //   output = C;
-    //   return PROGRAM_END_OUTPUT;
-    // }
+
     case 5:
       C = (command[command_size - 3] == '0')
               ? program.at(program.at(position + 1))
@@ -141,54 +114,34 @@ int process(int position, int first_run, vector<int> &program) {
 
 // vector<int> max_seq = {};
 int max_thrust = 0;
-vector<int> position_list = {0, 0, 0, 0, 0};
-vector<vector<int>> program_list = {original_program, original_program,
-                                    original_program, original_program,
-                                    original_program};
-
+int position = 0;
+int error = 0;
 int main() {
-  do {
-    position_list = {0, 0, 0, 0, 0};
-    input[1] = 0;
-    output = 0;
-    vector<int> first_run = {1, 1, 1, 1, 1};
-    bool outerloop = true;
+  position = 0;
+  output = 0;
 
-    while (outerloop) {
-      for (int i = 0; i < 5; i++) {
-        input[0] = phase_seq[i];
-        int error = 0;
-        while (true) {
-          error = process(position_list[i], first_run[i], program_list[i]);
-          if (error > 0) {
-            position_list[i] = error;
-          } else if (error == PROGRAM_END_OUTPUT) {
-            position_list[i] += 2;
-            first_run[i] = 0;
-            // cout << "Program ended with output command\n";
-            break;
-          } else if (error == PROGRAM_END_NORMAL) {
-            cout << "Program ended normally\n";
-            if (i == 4) {
-              outerloop = false;
-            }
-            break;
-          } else if (error == PROGRAM_END_UNEXPECTED) {
-            cout << "Unexpected command\n";
-            break;
-          } else {
-            cout << "This should not have happened\n";
-            break;
-          }
-        }
-      }
+  while (true) {
+    error = process(position);
+    if (error > 0) {
+      position = error;
+    } else if (error == PROGRAM_END_OUTPUT) {
+      position += 2;
+      // cout << "Program ended with output command\n";
+      break;
+    } else if (error == PROGRAM_END_NORMAL) {
+      cout << "Program ended normally\n";
+      break;
+    } else if (error == PROGRAM_END_UNEXPECTED) {
+      cout << "Unexpected command\n";
+      break;
+    } else {
+      cout << "This should not have happened\n";
+      break;
     }
-    if (output > max_thrust) {
-      max_thrust = output;
-    }
-    // cout << max_thrust << endl;
-  } while (std::next_permutation(phase_seq.begin(), phase_seq.end()));
-  cout << max_thrust << endl;
+  }
+
+  cout << output << endl;
+
   // for (auto const& c : program) std::cout << c << ' ';
 
   return 0;
