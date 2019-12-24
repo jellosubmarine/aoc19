@@ -3,3 +3,5 @@
 #include <sstream>
 #include <fstream>
 #include <algorithm>
+#include <stdio.h>
+#include <cstring>
